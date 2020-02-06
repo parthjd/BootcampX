@@ -8,18 +8,19 @@ const pool = new Pool({
 });
 
 const input = process.argv.slice(2);
+const values = [`%${input[0]}%`, `${input[1]}`];
 
-pool
-  .query(
-    `
+const queryString = `
   SELECT students.id, students.name, cohorts.name as cohort_name
   FROM students
   JOIN cohorts ON cohorts.id = cohort_id
-  WHERE cohorts.name LIKE '%${input[0]}%'
+  WHERE cohorts.name LIKE $1
   GROUP BY cohorts.name, students.id
-  LIMIT ${input[1]}
-  `
-  )
+  LIMIT $2
+  `;
+
+pool
+  .query(queryString, values)
 
   .then(res => {
     res.rows.forEach(user => {

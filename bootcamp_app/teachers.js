@@ -8,20 +8,21 @@ const pool = new Pool({
 });
 
 const input = process.argv.slice(2);
+const values = [`%${input[0]}%`];
 
-pool
-  .query(
-    `
+const queryString = `
 select teachers.name as teacher, cohorts.name as cohort
 from assistance_requests
   JOIN teachers on teachers.id = teacher_id
   JOIN students on students.id = student_id
   JOIN cohorts on cohorts.id = cohort_id
-WHERE cohorts.name LIKE '%${input[0]}%'
+WHERE cohorts.name LIKE $1
 GROUP BY cohorts.name, teachers.name
 ORDER BY teacher;
-  `
-  )
+  `;
+
+pool
+  .query(queryString, values)
 
   .then(res => {
     res.rows.forEach(user => {
