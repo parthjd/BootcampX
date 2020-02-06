@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/parthjd/BootcampX/issues"
   },
-  "homepage": "https://github.com/parthjd/BootcampX#readme"
+  "homepage": "https://github.com/parthjd/BootcampX#readme",
+  "dependencies": {
+    "pg": "^7.18.1"
+  }
 }
